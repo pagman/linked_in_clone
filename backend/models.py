@@ -29,6 +29,7 @@ class User(Base):
     bidder_rating = Column(Float, nullable=True)
     location = Column(String, nullable=False)
     country = Column(String, nullable=False)
+    img = Column(String, nullable=False)
 
 
 class TokenSession(Base):
@@ -60,7 +61,7 @@ class Auction(Base):
     longtitude = Column(String, nullable=False)
     latitude = Column(String, nullable=False)
     normalised_description = Column(String, nullable=False)
-
+    img = Column(String, nullable=False)
     categories = relationship("Category", secondary=auction_category)
 
     photos = relationship("Photo")

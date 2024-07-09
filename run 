@@ -3,3 +3,8 @@ npm start
 backend
 uvicorn main:app --reload
 
+alembic
+alembic stamp head
+alembic revision --autogenerate -m "message"
+
+

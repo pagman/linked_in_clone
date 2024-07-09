@@ -6,7 +6,7 @@ import uvicorn
 import schema
 import errors
 from typing import List
-from db import get_db
+from db import get_db, drop_all_tables, run_alembic_migrations
 import logic
 from wrapper import Wrapper
 
@@ -21,6 +21,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 
 @app.exception_handler(errors.JsonException)
@@ -185,6 +187,18 @@ def get_all_categories(
     db: Session = Depends(get_db),
 ):
     return logic.get_all_categories(db)
+
+@app.get("/drop-database")
+async def drop_database():
+    drop_all_tables()
+    return {"message": "Database dropped"}
+
+@app.get("/rebuild-database")
+async def rebuild_database():
+    drop_all_tables()
+    run_alembic_migrations()
+    return {"message": "Database rebuilt"}
+
 
 
 if __name__ == '__main__':

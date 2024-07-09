@@ -31,6 +31,7 @@ class User(BaseModel):
     afm: str
     role: str
     validated: bool
+    img: str
 
     class Config:
         orm_mode = True
@@ -47,6 +48,7 @@ class UserCreate(BaseModel):
     country: str
     afm: str
     role: str
+    img: str
 
 
 class UserId(BaseModel):
@@ -116,7 +118,7 @@ class Auction(BaseModel):
     longtitude: str
     latitude: str
     categories: list[Category]
-    # photos: list[Photo]
+    img: str
     bids: list[Bid]
 
     class Config:
@@ -135,7 +137,7 @@ class ModifyAuction(BaseModel):
     longtitude: str
     latitude: str
     categories: Optional[list]
-    # photos: Optional[list]
+    img: str
 
 
 class SubmitBid(BaseModel):
@@ -157,7 +159,7 @@ class AuctionCreate(BaseModel):
     start: datetime  # YYYY-MM-DD[T]HH:MM
     ends: datetime
     description: str
-    # photo: list
+    img: str
     category: list
 
 
