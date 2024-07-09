@@ -118,14 +118,14 @@ function EditAuctionPage() {
           autoComplete="off"
         >
           <div>
-            <TextField
+            {/* <TextField
               required
               id="img"
               name="img"
               type="text"
               onChange={handleInputChange}
               defaultValue={list.photos[0].URL}
-            />
+            /> */}
             <TextField
               required
               id="name"

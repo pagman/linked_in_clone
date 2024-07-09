@@ -87,11 +87,11 @@ export default function SearchAppBar({
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
             <Link style={{ color: "white", textDecoration: "none" }} to="/">
-              AUCTION SITE
+              Ergasia TEDI
             </Link>
           </Typography>
 
-          <Link style={{ textDecoration: "none" }} to="/signin">
+          {/* <Link style={{ textDecoration: "none" }} to="/signin">
             <Button
               variant="text"
               style={{
@@ -101,8 +101,33 @@ export default function SearchAppBar({
             >
               Sign in
             </Button>
-          </Link>
-
+          </Link> */}
+          {!showing ? (
+            <Link style={{ textDecoration: "none" }} to="/signin">
+              <Button
+                variant="text"
+                style={{
+                  color: "white",
+                  fontSize: "15px",
+                }}
+              >
+                Sign in
+              </Button>
+            </Link>
+          ) : null}
+          {showing ? (
+            <Link style={{ textDecoration: "none" }} to="/signin">
+              <Button
+                variant="text"
+                style={{
+                  color: "white",
+                  fontSize: "15px",
+                }}
+              >
+                Sign out
+              </Button>
+            </Link>
+          ) : null}
           {showingAdmin ? (
             <Link style={{ textDecoration: "none" }} to="/allusers">
               <Button
@@ -125,7 +150,46 @@ export default function SearchAppBar({
                   fontSize: "15px",
                 }}
               >
+                Network
+              </Button>
+            </Link>
+          ) : null}
+          {showing ? (
+            <Link style={{ textDecoration: "none" }} to="/chat/0">
+              <Button
+                variant="text"
+                style={{
+                  color: "white",
+                  fontSize: "15px",
+                }}
+              >
+                Ads
+              </Button>
+            </Link>
+          ) : null}
+          {showing ? (
+            <Link style={{ textDecoration: "none" }} to="/chat/0">
+              <Button
+                variant="text"
+                style={{
+                  color: "white",
+                  fontSize: "15px",
+                }}
+              >
                 Chat
+              </Button>
+            </Link>
+          ) : null}
+          {showing ? (
+            <Link style={{ textDecoration: "none" }} to="/chat/0">
+              <Button
+                variant="text"
+                style={{
+                  color: "white",
+                  fontSize: "15px",
+                }}
+              >
+                Notifications
               </Button>
             </Link>
           ) : null}
@@ -139,6 +203,19 @@ export default function SearchAppBar({
                 }}
               >
                 My Account
+              </Button>
+            </Link>
+          ) : null}
+          {showing ? (
+            <Link style={{ textDecoration: "none" }} to="/chat/0">
+              <Button
+                variant="text"
+                style={{
+                  color: "white",
+                  fontSize: "15px",
+                }}
+              >
+                Settings
               </Button>
             </Link>
           ) : null}
