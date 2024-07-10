@@ -7,7 +7,7 @@ from db import Base
 
 auction_category = Table(
     'auction_category', Base.metadata,
-    Column('auction_id', Integer, ForeignKey('Auctions.id')),
+    Column('Post_id', Integer, ForeignKey('Posts.id')),
     Column('category_id', Integer, ForeignKey('Categories.id'))
 )
 
@@ -42,8 +42,8 @@ class TokenSession(Base):
     user = relationship("User")
 
 
-class Auction(Base):
-    __tablename__ = "Auctions"
+class Post(Base):
+    __tablename__ = "Posts"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
@@ -62,11 +62,11 @@ class Auction(Base):
     latitude = Column(String, nullable=False)
     normalised_description = Column(String, nullable=False)
     img = Column(String, nullable=False)
-    categories = relationship("Category", secondary=auction_category)
+    # categories = relationship("Category", secondary=auction_category)
 
     photos = relationship("Photo")
 
-    bids = relationship("Bid")
+    # bids = relationship("Bid")
 
 
 class Category(Base):
@@ -75,7 +75,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
 
-    auctions = relationship("Auction", secondary=auction_category)
+    posts = relationship("Post", secondary=auction_category)
 
 
 class Photo(Base):
@@ -83,16 +83,16 @@ class Photo(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     URL = Column(String, nullable=False)
-    auction_id = Column(Integer, ForeignKey("Auctions.id"), nullable=False)
-    auction = relationship("Auction")
+    post_id = Column(Integer, ForeignKey("Posts.id"), nullable=False)
+    post = relationship("Post")
 
 
 class Bid(Base):
     __tablename__ = "Bids"
 
     id = Column(Integer, primary_key=True, index=True)
-    auction_id = Column(Integer, ForeignKey("Auctions.id"), nullable=False)
-    auction = relationship("Auction")
+    post_id = Column(Integer, ForeignKey("Posts.id"), nullable=False)
+    post = relationship("Post")
     bidder_id = Column(Integer, ForeignKey("Users.id"), nullable=False)
     bidder = relationship("User")
     time = Column(DateTime(timezone=True), nullable=False)

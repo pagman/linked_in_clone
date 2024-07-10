@@ -43,38 +43,38 @@ def login(db, creds):
     return {"token": db_token.token, "role": db_user.role}
 
 
-def get_auctions(db, token, query_params):
+def get_posts(db, token, query_params):
     utils._existing_token_and_active(db, token)
     return crud.get_object_list(
-        db, models.Auction, **query_params.dict())
+        db, models.Post, **query_params.dict())
 
 
-def create_auction(db, body, token):
+def create_post(db, body, token):
     db_user = utils._token_user_is_validated(db, token)
     print(db_user)
     # data, categories, photos = utils._prepare_auction_creation_data(
     data, categories = utils._prepare_auction_creation_data(
         db_user.id, body
     )
-    db_auction = crud.create_object(db, models.Auction, data, commit=False)
-    print(db_auction)
-    for x in categories:        # adding categories
-        db_category = crud.get_object_or_none(
-            db,
-            models.Category,
-            filters={"name": x})
-        if not db_category:
-            db_category = crud.create_object(db, models.Category, {"name": x})
-        db_auction.categories.append(db_category)
+    db_post = crud.create_object(db, models.Post, data, commit=False)
+    print(db_post)
+    # for x in categories:        # adding categories
+    #     db_category = crud.get_object_or_none(
+    #         db,
+    #         models.Category,
+    #         filters={"name": x})
+    #     if not db_category:
+    #         db_category = crud.create_object(db, models.Category, {"name": x})
+    #     db_post.categories.append(db_category)
     # for y in photos:        # adding photos
     #     object = {"auction_id": db_auction.id, "URL": y}
     #     crud.create_object(db, models.Photo, object, commit=False)
     db.commit()
-    db.refresh(db_auction)
-    return db_auction
+    db.refresh(db_post)
+    return db_post
 
 
-def modify_auction(db, body, token):
+def modify_post(db, body, token):
     db_auction = utils._token_user_is_auction_creator(db, body, token)
     utils._allowed_modified_timer(db_auction)
     if body.categories:
@@ -132,14 +132,14 @@ def delete_message(db, message_id, token):
     return crud.remove_object(db, models.Message, message_id)
 
 
-def is_auction_winner(db, token, auction_id):
-    db_user = utils._token_user_is_validated(db, token)
-    db_auction = crud.get_object_or_none(
-        db, models.Auction, filters={"id": auction_id}
-    )
-    if not db_auction:
-        raise errors.JsonException(errors.AUCTION_NOT_FOUND, code=404)
-    return utils._user_won_auction(db, db_user.id, db_auction)
+# def is_auction_winner(db, token, auction_id):
+#     db_user = utils._token_user_is_validated(db, token)
+#     db_auction = crud.get_object_or_none(
+#         db, models.Auction, filters={"id": auction_id}
+#     )
+#     if not db_auction:
+#         raise errors.JsonException(errors.AUCTION_NOT_FOUND, code=404)
+#     return utils._user_won_auction(db, db_user.id, db_auction)
 
 
 def unread_messages(db, token):
@@ -152,14 +152,14 @@ def unread_messages(db, token):
     return message_list
 
 
-def get_users_auction(db, token):
+def get_users_posts(db, token):
     db_user = utils._token_user_is_validated(db, token)
     return crud.get_object_list(
         db, models.Auction, filters={"seller_id": db_user.id}
     )
 
 
-def get_auction(db, auction_id):
+def get_post(db, auction_id):
     db_auction = crud.get_object_or_none(
         db, models.Auction, filters={"id": auction_id})
     if not db_auction:
@@ -206,7 +206,7 @@ def admin_get_auction(db, auction_id, token):
     return db_auction
 
 
-def Search_Αuction(db, query_params):
+def Search_post(db, query_params):
     text_query = ""
     if query_params.free_text:
         text_query = utils._normalize_text_data(query_params.free_text)

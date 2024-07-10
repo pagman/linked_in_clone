@@ -49,12 +49,12 @@ def create_user(body: schema.UserCreate, db: Session = Depends(get_db)):
     return logic.create_user(db, body)
 
 
-@app.put("/admin/validate-user/", response_model=schema.User)
-def validate_user(
-    body: schema.UserId, db: Session = Depends(get_db),
-    token: str = Header(None)
-):
-    return logic.validate_user(db, body.user_id, token)
+# @app.put("/admin/validate-user/", response_model=schema.User)
+# def validate_user(
+#     body: schema.UserId, db: Session = Depends(get_db),
+#     token: str = Header(None)
+# ):
+#     return logic.validate_user(db, body.user_id, token)
 
 
 @app.post("/login/", response_model=schema.LoginToken)
@@ -64,36 +64,36 @@ def login(
     return logic.login(db, body)
 
 
-@app.get("/auctions/", response_model=List[schema.Auction])
-def get_auctions(
+@app.get("/posts/", response_model=List[schema.Post])
+def get_posts(
     db: Session = Depends(get_db), token: str = Header(None),
     query_params: schema.ItemQueryParams = Depends()
 ):
-    return logic.get_auctions(db, token, query_params)
+    return logic.get_posts(db, token, query_params)
 
 
-@app.post("/register-auction/", response_model=schema.Auction)
-def create_auction(
-    body: schema.AuctionCreate, db: Session = Depends(get_db),
+@app.post("/create-post/", response_model=schema.Post)
+def create_post(
+    body: schema.PostCreate, db: Session = Depends(get_db),
     token: str = Header(None)
 ):
-    return logic.create_auction(db, body, token)
+    return logic.create_post(db, body, token)
 
 
-@app.post("/modify-auction/", response_model=schema.Auction)
-def modify_auction(
-    body: schema.ModifyAuction, db: Session = Depends(get_db),
+@app.post("/modify-post/", response_model=schema.Post)
+def modify_post(
+    body: schema.ModifyPost, db: Session = Depends(get_db),
     token: str = Header(None)
 ):
-    return logic.modify_auction(db, body, token)
+    return logic.modify_post(db, body, token)
 
 
-@app.post('/bid/', response_model=schema.Bid)
-def submit_bid(
-    body: schema.SubmitBid, db: Session = Depends(get_db),
-    token: str = Header(None)
-):
-    return logic.submit_bid(db, body, token)
+# @app.post('/bid/', response_model=schema.Bid)
+# def submit_bid(
+#     body: schema.SubmitBid, db: Session = Depends(get_db),
+#     token: str = Header(None)
+# ):
+#     return logic.submit_bid(db, body, token)
 
 
 @app.post('/message/', response_model=schema.Message)
@@ -113,12 +113,12 @@ def delete_message(
     return logic.delete_message(db, message_id, token)
 
 
-@app.get('/auction-winner/{auction_id}/', response_model=dict)
-def is_auction_winner(
-    auction_id: int,
-    db: Session = Depends(get_db), token: str = Header(None)
-):
-    return logic.is_auction_winner(db, token, auction_id)
+# @app.get('/auction-winner/{auction_id}/', response_model=dict)
+# def is_auction_winner(
+#     auction_id: int,
+#     db: Session = Depends(get_db), token: str = Header(None)
+# ):
+#     return logic.is_auction_winner(db, token, auction_id)
 
 
 @app.get('/unread-messages/', response_model=list[schema.Message])
@@ -128,19 +128,19 @@ def unread_messages(
     return logic.unread_messages(db, token)
 
 
-@app.get('/users-auction/', response_model=list[schema.Auction])
-def get_users_auction(
+@app.get('/users-posts/', response_model=list[schema.Post])
+def get_users_posts(
     db: Session = Depends(get_db), token: str = Header(None)
 ):
-    return logic.get_users_auction(db, token)
+    return logic.get_users_posts(db, token)
 
 
-@app.get('/get-auction/{auction_id}/', response_model=schema.Auction)
+@app.get('/get-post/{auction_id}/', response_model=schema.Post)
 def get_auction(
     auction_id: int,
     db: Session = Depends(get_db)
 ):
-    return logic.get_auction(db, auction_id)
+    return logic.get_post(db, auction_id)
 
 
 @app.get('/active-conversations/', response_model=list[schema.User])
@@ -150,23 +150,23 @@ def get_active_coversations(
     return logic.get_active_conversations(db, token)
 
 
-@app.get('/auction-wins/', response_model=List[schema.Auction])
-def get_auction_wins(
-    db: Session = Depends(get_db), token: str = Header(None)
-):
-    return logic.get_auction_wins(db, token)
+# @app.get('/auction-wins/', response_model=List[schema.Post])
+# def get_auction_wins(
+#     db: Session = Depends(get_db), token: str = Header(None)
+# ):
+#     return logic.get_auction_wins(db, token)
 
 
-@app.get('/admin-get-auction/{auction_id}/', response_model=schema.Auction)
-def admin_get_auction(
-    auction_id: int,
-    db: Session = Depends(get_db), token: str = Header(None),
-    media_type: str = Header(None)
-):
-    return logic.admin_get_auction(db, auction_id, token)
+# @app.get('/admin-get-auction/{auction_id}/', response_model=schema.Post)
+# def admin_get_auction(
+#     auction_id: int,
+#     db: Session = Depends(get_db), token: str = Header(None),
+#     media_type: str = Header(None)
+# ):
+#     return logic.admin_get_auction(db, auction_id, token)
 
 
-@app.get('/Search-auction/', response_model=list[schema.Auction])
+@app.get('/Search-post/', response_model=list[schema.Post])
 def Search_auction(
     db: Session = Depends(get_db),
     query_params: schema.SearchParams = Depends()
@@ -182,11 +182,11 @@ def logout(
     return logic.logout(db, token)
 
 
-@app.get('/categories/', response_model=list[schema.Category])
-def get_all_categories(
-    db: Session = Depends(get_db),
-):
-    return logic.get_all_categories(db)
+# @app.get('/categories/', response_model=list[schema.Category])
+# def get_all_categories(
+#     db: Session = Depends(get_db),
+# ):
+#     return logic.get_all_categories(db)
 
 @app.get("/drop-database")
 async def drop_database():

@@ -85,7 +85,7 @@ class Photo(BaseModel):
 
 class Bid(BaseModel):
     id: int
-    auction_id: int
+    post_id: int
     bidder_id: int
     time: datetime
     amount: float
@@ -102,7 +102,7 @@ class Category(BaseModel):
         orm_mode = True
 
 
-class Auction(BaseModel):
+class Post(BaseModel):
     id: int
     name: str
     currently:float  = 0.0
@@ -117,15 +117,15 @@ class Auction(BaseModel):
     description: str
     longtitude: str
     latitude: str
-    categories: list[Category]
+    # categories: list[Category]
     img: str
-    bids: list[Bid]
+    # bids: list[Bid]
 
     class Config:
         from_attributes = True
 
 
-class ModifyAuction(BaseModel):
+class ModifyPost(BaseModel):
     id: int
     name: str
     buy_price: float
@@ -146,7 +146,7 @@ class SubmitBid(BaseModel):
     amount: float
 
 
-class AuctionCreate(BaseModel):
+class PostCreate(BaseModel):
     name: str
     currently:float  = Field(default=0.0)
     buy_price: float
