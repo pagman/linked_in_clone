@@ -7,7 +7,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 
 
 def get_users(db, token):
-    utils._token_is_admin(db, token)
+    utils._token_is_admin(db, token)# comment to get all users without token
     return crud.get_object_list(db, models.User)
 
 
@@ -17,7 +17,7 @@ def create_user(db, body):
     if db_user:
         raise errors.JsonException(errors.USERNAME_IN_USE, code=400)
     data = body.dict()
-    data["validated"] = False
+    data["validated"] = True
     # data["role"] = "User"
     return crud.create_object(db, models.User, data)
 
@@ -53,7 +53,7 @@ def create_post(db, body, token):
     db_user = utils._token_user_is_validated(db, token)
     print(db_user)
     # data, categories, photos = utils._prepare_auction_creation_data(
-    data, categories = utils._prepare_auction_creation_data(
+    data = utils._prepare_auction_creation_data(
         db_user.id, body
     )
     db_post = crud.create_object(db, models.Post, data, commit=False)
@@ -155,13 +155,13 @@ def unread_messages(db, token):
 def get_users_posts(db, token):
     db_user = utils._token_user_is_validated(db, token)
     return crud.get_object_list(
-        db, models.Auction, filters={"seller_id": db_user.id}
+        db, models.Post, filters={"user_id": db_user.id}
     )
 
 
 def get_post(db, auction_id):
     db_auction = crud.get_object_or_none(
-        db, models.Auction, filters={"id": auction_id})
+        db, models.Post, filters={"id": auction_id})
     if not db_auction:
         raise errors.JsonException(errors.AUCTION_NOT_FOUND, code=404)
     return db_auction

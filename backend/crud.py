@@ -16,18 +16,17 @@ def get_object_or_none(
 
 
 def get_object_list(
-    db, model, filters={}, complex_filters=[],
-    order_by=None, skip=None, limit=None,
+    db, model, filters={}, complex_filters=[]
 ):
     queryset = db.query(model).filter_by(**filters).filter(
         *complex_filters)
-    if order_by:
-        queryset = queryset.order_by(getattr(model, order_by).desc())
-    queryset = queryset.order_by(model.id.desc())
-    if skip:
-        queryset = queryset.offset(skip)
-    if limit:
-        queryset = queryset.limit(limit)
+    # if order_by:
+    #     queryset = queryset.order_by(getattr(model, order_by).desc())
+    # queryset = queryset.order_by(model.id.desc())
+    # if skip:
+    #     queryset = queryset.offset(skip)
+    # if limit:
+    #     queryset = queryset.limit(limit)
     db_objects = queryset.all()
     return db_objects
 

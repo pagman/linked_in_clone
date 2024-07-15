@@ -65,8 +65,8 @@ class ItemQueryParams(Pagination):
 
 
 class LoginCredentials(BaseModel):
-    username: str
-    password: str
+    username: str = Field(default="admin")
+    password: str = Field(default="admin")
 
 
 class LoginToken(BaseModel):
@@ -104,23 +104,13 @@ class Category(BaseModel):
 
 class Post(BaseModel):
     id: int
-    name: str
-    currently:float  = 0.0
-    buy_price: float
-    first_bid:float  = 0.0
-    number_of_bids:int =0
-    seller_id: int
-    location: str
-    country: str
-    start: datetime  # YYYY-MM-DD[T]HH:MM
-    ends: datetime
-    description: str
-    longtitude: str
-    latitude: str
-    # categories: list[Category]
-    img: str
-    # bids: list[Bid]
-
+    title: str
+    description: str = Field(default=" ")
+    user_id: int
+    img: str = Field(default=" ")
+    audio: str = Field(default=" ")
+    video: str = Field(default=" ")
+ 
     class Config:
         from_attributes = True
 
@@ -132,7 +122,7 @@ class ModifyPost(BaseModel):
     location: str
     country: str
     start: datetime
-    ends: datetime
+    # ends: datetime
     description: str
     longtitude: str
     latitude: str
@@ -146,21 +136,13 @@ class SubmitBid(BaseModel):
     amount: float
 
 
-class PostCreate(BaseModel):
-    name: str
-    currently:float  = Field(default=0.0)
-    buy_price: float
-    first_bid:float  = Field(default=0.0)
-    number_of_bids:int = Field(default=0)
-    location: str
-    country: str
-    latitude: str
-    longtitude: str
-    start: datetime  # YYYY-MM-DD[T]HH:MM
-    ends: datetime
-    description: str
-    img: str
-    category: list
+class PostCreate(BaseModel):    
+    title: str
+    description: str = Field(default=" ")
+    # user_id: int
+    img: str = Field(default=" ")
+    audio: str = Field(default=" ")
+    video: str = Field(default=" ")
 
 
 class Message(BaseModel):

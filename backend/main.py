@@ -80,12 +80,12 @@ def create_post(
     return logic.create_post(db, body, token)
 
 
-@app.post("/modify-post/", response_model=schema.Post)
-def modify_post(
-    body: schema.ModifyPost, db: Session = Depends(get_db),
-    token: str = Header(None)
-):
-    return logic.modify_post(db, body, token)
+# @app.post("/modify-post/", response_model=schema.Post)
+# def modify_post(
+#     body: schema.ModifyPost, db: Session = Depends(get_db),
+#     token: str = Header(None)
+# ):
+#     return logic.modify_post(db, body, token)
 
 
 # @app.post('/bid/', response_model=schema.Bid)

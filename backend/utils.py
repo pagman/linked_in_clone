@@ -21,14 +21,14 @@ def _existing_token_and_active(db, token):
 
 def _prepare_auction_creation_data(user_id, body):
     data = body.dict()
-    data["seller_id"] = user_id
-    data["normalised_description"] = _create_normalized_description(
-        data["description"], data["name"], data["category"]
-    )
-    categories = data.pop("category")
+    data["user_id"] = user_id
+    # data["normalised_description"] = _create_normalized_description(
+    #     data["title"], data["description"]
+    # )
+    # categories = data.pop("category")
     # photos = data.pop("photo")
     # return data, categories, photos,
-    return data, categories,
+    return data
 
 
 def _token_user_is_validated(db, token):
@@ -52,7 +52,7 @@ def _token_user_is_auction_creator(db, body, token):
     )
     if not db_auction:
         raise errors.JsonException(errors.AUCTION_NOT_FOUND, code=404)
-    if db_auction.seller_id != db_user.id:
+    if db_auction.user_id != db_user.id:
         raise errors.JsonException(errors.USER_NOT_AUTHORISED, code=401)
     return db_auction
 
@@ -122,11 +122,9 @@ def _normalize_text_data(data):   # code from https://www.geeksforgeeks.org
     return no_stopwords_data  # string
 
 
-def _create_normalized_description(description, name, categories):
+def _create_normalized_description(description, name):
     search_list = _normalize_text_data(description)
     search_list += f" {_normalize_text_data(name)}"
-    for i in categories:
-        search_list += f" {_normalize_text_data(i)}"
     return search_list
 
 
@@ -147,7 +145,7 @@ def _user_related_to_auction(db, user_id, auction_id):
     )
     if not db_auction:
         raise errors.JsonException(errors.AUCTION_NOT_FOUND, code=404)
-    if db_auction.seller_id == user_id:
+    if db_auction.user_id == user_id:
         return
     MaxBid = crud.get_object_list(
         db, models.Bid, filters={"auction_id": db_auction.id, },

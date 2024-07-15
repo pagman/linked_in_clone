@@ -46,27 +46,15 @@ class Post(Base):
     __tablename__ = "Posts"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    currently = Column(Float, nullable=False)
-    buy_price = Column(Float, nullable=False)
-    first_bid = Column(Float, nullable=False)
-    number_of_bids = Column(Float, nullable=False)
-    start = Column(DateTime(timezone=True), nullable=False)
-    ends = Column(DateTime(timezone=True), nullable=False)
+    title = Column(String, nullable=False)
     description = Column(String, nullable=True)
-    seller_id = Column(Integer, ForeignKey("Users.id"), nullable=False)
-    seller = relationship("User")
-    location = Column(String, nullable=True)
-    country = Column(String, nullable=True)
-    longtitude = Column(String, nullable=False)
-    latitude = Column(String, nullable=False)
-    normalised_description = Column(String, nullable=False)
-    img = Column(String, nullable=False)
-    # categories = relationship("Category", secondary=auction_category)
+    user_id = Column(Integer, ForeignKey("Users.id"), nullable=False)
+    user = relationship("User")
+    img = Column(String, nullable=True)
+    audio = Column(String, nullable=True)
+    video = Column(String, nullable=True)
 
     photos = relationship("Photo")
-
-    # bids = relationship("Bid")
 
 
 class Category(Base):
