@@ -56,6 +56,17 @@ class Post(Base):
 
     photos = relationship("Photo")
 
+class Ad(Base):
+    __tablename__ = "Ads"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    user_id = Column(Integer, ForeignKey("Users.id"), nullable=False)
+    user = relationship("User")
+    img = Column(String, nullable=True)
+
+    # photos = relationship("Photo")
+
 
 class Category(Base):
     __tablename__ = "Categories"

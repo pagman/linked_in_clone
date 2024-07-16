@@ -73,6 +73,19 @@ def create_post(db, body, token):
     db.refresh(db_post)
     return db_post
 
+def create_ad(db, body, token):
+    db_user = utils._token_user_is_validated(db, token)
+    print(db_user)
+    # data, categories, photos = utils._prepare_auction_creation_data(
+    data = utils._prepare_auction_creation_data(
+        db_user.id, body
+    )
+    db_ad = crud.create_object(db, models.Ad, data, commit=False)
+    print(db_ad)
+    db.commit()
+    db.refresh(db_ad)
+    return db_ad
+
 
 def modify_post(db, body, token):
     db_auction = utils._token_user_is_auction_creator(db, body, token)
@@ -160,8 +173,15 @@ def get_users_posts(db, token):
 
 
 def get_post(db, auction_id):
-    db_auction = crud.get_object_or_none(
-        db, models.Post, filters={"id": auction_id})
+    db_auction = crud.get_object_list(
+        db, models.Post, filters={})
+    if not db_auction:
+        raise errors.JsonException(errors.AUCTION_NOT_FOUND, code=404)
+    return db_auction
+
+def get_ads(db, auction_id):
+    db_auction = crud.get_object_list(
+        db, models.Ad, filters={})
     if not db_auction:
         raise errors.JsonException(errors.AUCTION_NOT_FOUND, code=404)
     return db_auction

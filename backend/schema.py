@@ -114,6 +114,16 @@ class Post(BaseModel):
     class Config:
         from_attributes = True
 
+class Ad(BaseModel):
+    id: int
+    title: str
+    description: str = Field(default=" ")
+    user_id: int
+    img: str = Field(default=" ")
+ 
+    class Config:
+        from_attributes = True
+
 
 class ModifyPost(BaseModel):
     id: int
@@ -143,6 +153,12 @@ class PostCreate(BaseModel):
     img: str = Field(default=" ")
     audio: str = Field(default=" ")
     video: str = Field(default=" ")
+
+class AdCreate(BaseModel):    
+    title: str
+    description: str = Field(default=" ")
+    # user_id: int
+    img: str = Field(default=" ")
 
 
 class Message(BaseModel):

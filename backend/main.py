@@ -65,11 +65,18 @@ def login(
 
 
 @app.get("/posts/", response_model=List[schema.Post])
-def get_posts(
+def get_post(
     db: Session = Depends(get_db), token: str = Header(None),
-    query_params: schema.ItemQueryParams = Depends()
+    # query_params: schema.ItemQueryParams = Depends()
 ):
-    return logic.get_posts(db, token, query_params)
+    return logic.get_post(db, token)
+
+@app.get("/ads/", response_model=List[schema.Ad])
+def get_ads(
+    db: Session = Depends(get_db), token: str = Header(None),
+    # query_params: schema.ItemQueryParams = Depends()
+):
+    return logic.get_ads(db, token)
 
 
 @app.post("/create-post/", response_model=schema.Post)
@@ -78,6 +85,13 @@ def create_post(
     token: str = Header(None)
 ):
     return logic.create_post(db, body, token)
+
+@app.post("/create-ad/", response_model=schema.Post)
+def create_ad(
+    body: schema.AdCreate, db: Session = Depends(get_db),
+    token: str = Header(None)
+):
+    return logic.create_ad(db, body, token)
 
 
 # @app.post("/modify-post/", response_model=schema.Post)
@@ -141,6 +155,8 @@ def get_auction(
     db: Session = Depends(get_db)
 ):
     return logic.get_post(db, auction_id)
+
+
 
 
 @app.get('/active-conversations/', response_model=list[schema.User])
