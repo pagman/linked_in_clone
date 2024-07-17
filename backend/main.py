@@ -9,9 +9,13 @@ from typing import List
 from db import get_db, drop_all_tables, run_alembic_migrations
 import logic
 from wrapper import Wrapper
+import ssl
+
 
 origins = ["http://localhost:3000"]
 app = FastAPI()
+# ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+# ssl_context.load_cert_chain('ssl/cert.pem', keyfile='ssl/key.pem')
 app.router.route_class = Wrapper
 
 app.add_middleware(
@@ -224,4 +228,4 @@ async def rebuild_database():
 
 
 if __name__ == '__main__':
-    uvicorn.run("main:app", host="localhost", port=8080, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, ssl_keyfile="ssl/key.pem", ssl_certfile="ssl/cert.pem")
