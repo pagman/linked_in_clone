@@ -54,7 +54,7 @@ function SigninPage({ setShowing, setShowingAdmin }) {
       (formValues.vat !== "")
     ) {
       axios
-        .post("http://localhost:8080/users/", {
+        .post("https://localhost:8000/users/", {
           username: formValues.newUsername,
           password: formValues.newPassword,
           email: formValues.email,
@@ -84,7 +84,7 @@ function SigninPage({ setShowing, setShowingAdmin }) {
     // console.log(formValues);
     console.log(formValues.name);
     axios
-      .post("http://localhost:8080/login/", {
+      .post("https://localhost:8000/login/", {
         username: formValues.username,
         password: formValues.password,
       })

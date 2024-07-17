@@ -10,9 +10,10 @@ from db import get_db, drop_all_tables, run_alembic_migrations
 import logic
 from wrapper import Wrapper
 import ssl
+from fastapi.middleware.cors import CORSMiddleware
 
 
-origins = ["http://localhost:3000"]
+origins = ["https://localhost:3000"]
 app = FastAPI()
 # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 # ssl_context.load_cert_chain('ssl/cert.pem', keyfile='ssl/key.pem')
