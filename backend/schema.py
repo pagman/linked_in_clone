@@ -32,14 +32,20 @@ class User(BaseModel):
     role: str
     validated: bool
     img: str
+    work_exp: str = Field(default=" ")
+    work_exp_visible: bool = Field(default=True)
+    education: str = Field(default=" ")
+    education_visible: bool = Field(default=True)
+    expertise: str = Field(default=" ")
+    expertise_visible: bool = Field(default=True)
 
     class Config:
         orm_mode = True
 
 
 class UserCreate(BaseModel):
-    username: str
-    password: str
+    username: str = Field(default="admin")
+    password: str = Field(default="admin")
     email: str
     name: str
     surname: str
@@ -47,8 +53,14 @@ class UserCreate(BaseModel):
     location: str
     country: str
     afm: str
-    role: str
+    role: str = Field(default="admin")
     img: str
+    work_exp: str = Field(default=" ")
+    work_exp_visible: bool = Field(default=True)
+    education: str = Field(default=" ")
+    education_visible: bool = Field(default=True)
+    expertise: str = Field(default=" ")
+    expertise_visible: bool = Field(default=True)
 
 
 class UserId(BaseModel):
@@ -72,6 +84,7 @@ class LoginCredentials(BaseModel):
 class LoginToken(BaseModel):
     token: str
     role: str
+    user_id: int
 
 
 class Photo(BaseModel):

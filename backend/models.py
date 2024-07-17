@@ -30,6 +30,12 @@ class User(Base):
     location = Column(String, nullable=False)
     country = Column(String, nullable=False)
     img = Column(String, nullable=False)
+    work_exp = Column(String, nullable=False)
+    work_exp_visible = Column(Boolean, nullable=False)
+    education = Column(String, nullable=False)
+    education_visible = Column(Boolean, nullable=False)
+    expertise = Column(String, nullable=False)
+    expertise_visible = Column(Boolean, nullable=False)
 
 
 class TokenSession(Base):

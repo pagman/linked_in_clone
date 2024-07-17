@@ -40,7 +40,7 @@ def login(db, creds):
     db_token = crud.create_object(
         db, models.TokenSession,
         {"token": str(uuid.uuid4()), "active": True, "user_id": db_user.id})
-    return {"token": db_token.token, "role": db_user.role}
+    return {"token": db_token.token, "role": db_user.role, "user_id": db_user.id}
 
 
 def get_posts(db, token, query_params):
@@ -169,6 +169,12 @@ def get_users_posts(db, token):
     db_user = utils._token_user_is_validated(db, token)
     return crud.get_object_list(
         db, models.Post, filters={"user_id": db_user.id}
+    )
+
+def get_users_ads(db, token):
+    db_user = utils._token_user_is_validated(db, token)
+    return crud.get_object_list(
+        db, models.Ad, filters={"user_id": db_user.id}
     )
 
 

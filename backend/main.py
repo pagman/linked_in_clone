@@ -148,6 +148,12 @@ def get_users_posts(
 ):
     return logic.get_users_posts(db, token)
 
+@app.get('/users-ads/', response_model=list[schema.Ad])
+def get_users_ads(
+    db: Session = Depends(get_db), token: str = Header(None)
+):
+    return logic.get_users_ads(db, token)
+
 
 @app.get('/get-post/{auction_id}/', response_model=schema.Post)
 def get_auction(
