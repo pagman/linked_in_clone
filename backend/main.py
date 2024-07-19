@@ -1,16 +1,19 @@
-from fastapi import FastAPI, Depends, Request, Header, HTTPException
+from fastapi import FastAPI, Depends, Request, Header, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import uvicorn
 import schema
+import models
 import errors
 from typing import List
 from db import get_db, drop_all_tables, run_alembic_migrations
 import logic
 from wrapper import Wrapper
-import ssl
+from typing import List
 from fastapi.middleware.cors import CORSMiddleware
+
+
 
 
 origins = ["https://localhost:3000"]
@@ -208,6 +211,44 @@ def logout(
 ):
     return logic.logout(db, token)
 
+@app.post("/friends/requests")
+def send_friend_request(request: schema.Friend, db: Session = Depends(get_db)):
+    
+    # Check if request is for the current user or an existing friend
+    
+    # Create a new friend request
+    friend = models.Friend(requester_id=request.requester_id, requestee_id=request.requestee_id)
+    db.add(friend)
+    db.commit()
+    db.refresh(friend)
+
+    return {"message": "Friend request sent successfully"}
+
+@app.get("/users/{user_id}/pending-friends")
+def get_pending_friend_requests(user_id: int, db: Session = Depends(get_db)):
+    # Check if user exists (optional)
+
+    # Query for pending friend requests for the user
+    pending_requests = db.query(models.Friend) \
+        .filter(models.Friend.requestee_id == user_id, models.Friend.status == "pending") \
+        .order_by(models.Friend.id.asc()) \
+        .all()
+
+    # Optionally, populate user information from the relationships
+    if pending_requests:
+        for request in pending_requests:
+            request.requester = db.get(models.User, request.requester_id)  # Assuming one-to-one or one-to-many relationship
+
+    return pending_requests
+
+@app.put("/friends/requests/{friend_request_id}", status_code=status.HTTP_200_OK)
+async def approve_friend_request(friend_request_id: int, current_user: schema.User = Depends()):
+    # Fetch the friend request
+    friend_request = await app.db.query(schema.Friend).filter(schema.Friend.id == friend_request_id).first()
+
+    # Check if request exists and is for the current user
+    if not friend_request or friend_request.requestee_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Friend")
 
 # @app.get('/categories/', response_model=list[schema.Category])
 # def get_all_categories(

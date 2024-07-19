@@ -22,6 +22,8 @@ def create_user(db, body):
     return crud.create_object(db, models.User, data)
 
 
+
+
 def validate_user(db, userid, token):
     utils._token_is_admin(db, token)
     db_user = crud.get_object_or_none(
@@ -72,6 +74,18 @@ def create_post(db, body, token):
     db.commit()
     db.refresh(db_post)
     return db_post
+
+def create_friend_request(db, body, token):
+    db_user = utils._token_user_is_validated(db, token)
+    print(db_user)
+    data = utils._prepare_auction_creation_data(
+        db_user.id, body
+    )
+    db_fr = crud.create_object(db, models.FriendRequest, data, commit=False)
+    print(db_fr)
+    db.commit()
+    db.refresh(db_fr)
+    return db_fr
 
 def create_ad(db, body, token):
     db_user = utils._token_user_is_validated(db, token)

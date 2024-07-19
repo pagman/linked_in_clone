@@ -17,7 +17,11 @@ class SearchParams(BaseModel):
             return category
         return json.loads(category)
 
-
+class Friend(BaseModel):
+    requester_id: int
+    requestee_id: int
+    status: str = "pending"  # Initial status of friend request
+    
 class User(BaseModel):
     id: int
     username: str
@@ -38,9 +42,13 @@ class User(BaseModel):
     education_visible: bool = Field(default=True)
     expertise: str = Field(default=" ")
     expertise_visible: bool = Field(default=True)
+    friends: List[Friend] = []
 
     class Config:
         orm_mode = True
+
+
+
 
 
 class UserCreate(BaseModel):

@@ -3,6 +3,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship
 from db import Base
+from typing import Optional, List
 
 
 auction_category = Table(
@@ -36,6 +37,27 @@ class User(Base):
     education_visible = Column(Boolean, nullable=False)
     expertise = Column(String, nullable=False)
     expertise_visible = Column(Boolean, nullable=False)
+    
+class Friend(Base):
+    __tablename__ = "friends"
+    id = Column(Integer, primary_key=True)
+    requester_id = Column(Integer, ForeignKey("Users.id"))
+    requestee_id = Column(Integer, ForeignKey("Users.id"))
+    status = Column(String, default="pending")  # Initial status of friend request
+
+    requester = relationship("User", foreign_keys=[requester_id], backref="sent_friend_requests")  # Optional for one-to-many relationship
+    requestee = relationship("User", foreign_keys=[requestee_id], backref="received_friend_requests")  # Optional for one-to-many relationship
+
+class FriendRequest(Base):
+    __tablename__ = 'friend_requests'
+    user_id = Column(Integer, ForeignKey("Users.id"), nullable=False)
+    id = Column(Integer, primary_key=True, index=True)
+    requester_id = Column(Integer, ForeignKey('Users.id'), nullable=False)
+    receiver_id = Column(Integer, ForeignKey('Users.id'))
+    status = Column(String, default='pending')  # can be 'pending', 'accepted', or 'rejected'
+
+    requester = relationship('User', foreign_keys=[requester_id])
+    receiver = relationship('User', foreign_keys=[receiver_id])
 
 
 class TokenSession(Base):
