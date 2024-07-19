@@ -185,6 +185,7 @@ def get_users_posts(db, token):
         db, models.Post, filters={"user_id": db_user.id}
     )
 
+
 def get_users_ads(db, token):
     db_user = utils._token_user_is_validated(db, token)
     return crud.get_object_list(
@@ -195,6 +196,13 @@ def get_users_ads(db, token):
 def get_post(db, auction_id):
     db_auction = crud.get_object_list(
         db, models.Post, filters={})
+    if not db_auction:
+        raise errors.JsonException(errors.AUCTION_NOT_FOUND, code=404)
+    return db_auction
+
+def get_user(db, auction_id):
+    db_auction = crud.get_object_or_none(
+        db, models.User, filters={"id": auction_id})
     if not db_auction:
         raise errors.JsonException(errors.AUCTION_NOT_FOUND, code=404)
     return db_auction

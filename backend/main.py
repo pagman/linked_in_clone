@@ -156,6 +156,7 @@ def get_users_posts(
 ):
     return logic.get_users_posts(db, token)
 
+
 @app.get('/users-ads/', response_model=list[schema.Ad])
 def get_users_ads(
     db: Session = Depends(get_db), token: str = Header(None)
@@ -163,12 +164,19 @@ def get_users_ads(
     return logic.get_users_ads(db, token)
 
 
-@app.get('/get-post/{auction_id}/', response_model=schema.Post)
-def get_auction(
-    auction_id: int,
+# @app.get('/get-post/{auction_id}/', response_model=schema.Post)
+# def get_auction(
+#     auction_id: int,
+#     db: Session = Depends(get_db)
+# ):
+#     return logic.get_post(db, auction_id)
+
+@app.get('/get-user_id/{user_id}/', response_model=schema.User)
+def get_user(
+    id: int,
     db: Session = Depends(get_db)
 ):
-    return logic.get_post(db, auction_id)
+    return logic.get_user(db, id)
 
 
 
@@ -217,7 +225,7 @@ def send_friend_request(request: schema.Friend, db: Session = Depends(get_db)):
     # Check if request is for the current user or an existing friend
     
     # Create a new friend request
-    friend = models.Friend(requester_id=request.requester_id, requestee_id=request.requestee_id)
+    friend = models.Friend(requester_id=request.requester_id, requestee_id=request.requestee_id,requestee_name =  request.requestee_name)
     db.add(friend)
     db.commit()
     db.refresh(friend)
@@ -241,14 +249,42 @@ def get_pending_friend_requests(user_id: int, db: Session = Depends(get_db)):
 
     return pending_requests
 
-@app.put("/friends/requests/{friend_request_id}", status_code=status.HTTP_200_OK)
-async def approve_friend_request(friend_request_id: int, current_user: schema.User = Depends()):
-    # Fetch the friend request
-    friend_request = await app.db.query(schema.Friend).filter(schema.Friend.id == friend_request_id).first()
+@app.put("/friends/requests/{friend_request_id}")
+def approve_friend_request(friend_request_id: int, db: Session = Depends(get_db)):
+    # ... existing logic for fetching the request ...
+    friend_request = db.query(models.Friend).filter(models.Friend.id == friend_request_id).first()
 
-    # Check if request exists and is for the current user
-    if not friend_request or friend_request.requestee_id != current_user.id:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Friend")
+    # Update the friend request status
+    friend_request.status = "accepted"  # Set status to accepted
+
+    db.commit()
+
+    return {"message": "Friend request approved successfully"}
+
+@app.get("/users/{user_id}/friends")
+def get_friends(user_id: int, db: Session = Depends(get_db)):
+    # Check if user exists (optional)
+
+    # Option 1: Using relationship on User model (assuming one-to-many)
+    if "friends" in models.User.__dict__:  # Check if 'friends' field is present
+        friends = db.query(models.User).filter(models.User.id == user_id).first().friends
+
+    # Option 2: Querying Friend model directly
+    else:
+        friends = db.query(models.Friend) \
+            .filter(models.Friend.requestee_id == user_id, models.Friend.status == "accepted") \
+            .join(models.User, models.Friend.requester_id == models.User.id) \
+            .order_by(models.Friend.id.asc()) \
+            .all()
+    
+    if not isinstance(friends, list):  # Check if friends is already a list (from relationship)
+            friends = [
+                {"username": friend.requester.username, **friend.__dict__}
+                for friend in friends
+            ]  # Include other friend attributes if desired
+
+
+    return friends
 
 # @app.get('/categories/', response_model=list[schema.Category])
 # def get_all_categories(

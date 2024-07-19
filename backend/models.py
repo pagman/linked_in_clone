@@ -43,6 +43,7 @@ class Friend(Base):
     id = Column(Integer, primary_key=True)
     requester_id = Column(Integer, ForeignKey("Users.id"))
     requestee_id = Column(Integer, ForeignKey("Users.id"))
+    requestee_name = Column(String, ForeignKey("Users.username"))
     status = Column(String, default="pending")  # Initial status of friend request
 
     requester = relationship("User", foreign_keys=[requester_id], backref="sent_friend_requests")  # Optional for one-to-many relationship
@@ -54,6 +55,7 @@ class FriendRequest(Base):
     id = Column(Integer, primary_key=True, index=True)
     requester_id = Column(Integer, ForeignKey('Users.id'), nullable=False)
     receiver_id = Column(Integer, ForeignKey('Users.id'))
+    requestee_name = Column(String, ForeignKey("Users.username"))
     status = Column(String, default='pending')  # can be 'pending', 'accepted', or 'rejected'
 
     requester = relationship('User', foreign_keys=[requester_id])
