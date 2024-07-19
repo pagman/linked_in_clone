@@ -23,6 +23,8 @@ class Friend(BaseModel):
     requestee_name: str
     status: str = "pending"  # Initial status of friend request
 
+
+
 class User(BaseModel):
     id: int
     username: str
@@ -131,9 +133,29 @@ class Post(BaseModel):
     img: str = Field(default=" ")
     audio: str = Field(default=" ")
     video: str = Field(default=" ")
+    interested_users: List[str] = Field(default=[""])
+    
  
     class Config:
         from_attributes = True
+
+class Interest(BaseModel):
+    id: int
+    user_id: int
+    post_id: int
+    created_at: datetime
+
+    class Config:
+        orm_mode: True
+
+class PostWithInterests(BaseModel):
+    id: int
+    title: str
+    content: str
+    interests: List[Interest] = []
+
+    class Config:
+        orm_mode: True
 
 class Ad(BaseModel):
     id: int

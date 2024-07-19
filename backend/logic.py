@@ -24,13 +24,24 @@ def create_user(db, body):
 
 
 
-def validate_user(db, userid, token):
-    utils._token_is_admin(db, token)
+# def validate_user(db, userid, token):
+#     utils._token_is_admin(db, token)
+#     db_user = crud.get_object_or_none(
+#         db, models.User, filters={"id": userid})
+#     if not db_user:
+#         raise errors.JsonException(errors.USER_NOT_FOUND, code=404)
+#     return crud.edit_object(db, db_user, {"validated": True})
+
+def show_interest(db, postid,name):
+    # utils._token_is_admin(db, token)
     db_user = crud.get_object_or_none(
-        db, models.User, filters={"id": userid})
+        db, models.Post, filters={"id": postid})
     if not db_user:
         raise errors.JsonException(errors.USER_NOT_FOUND, code=404)
-    return crud.edit_object(db, db_user, {"validated": True})
+    print("-----------------------------------------")
+    print(db_user.interested_users)
+    print("-----------------------------------------")
+    return crud.edit_object(db, db_user, {"interested_users": db_user.interested_users+[name]})
 
 
 def login(db, creds):

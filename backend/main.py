@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, Request, Header, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, subqueryload
 import uvicorn
 import schema
 import models
@@ -12,6 +12,7 @@ import logic
 from wrapper import Wrapper
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.future import select
 
 
 
@@ -291,6 +292,51 @@ def get_friends(user_id: int, db: Session = Depends(get_db)):
 #     db: Session = Depends(get_db),
 # ):
 #     return logic.get_all_categories(db)
+
+# @app.post("/interest/")
+# def show_interest(interest: schema.UserInterestCreate, db: Session = Depends(get_db)):
+#     # Check if the post exists
+#     post = db.query(models.Post).filter(models.Post.id == interest.post_id).first()
+#     if not post:
+#         raise HTTPException(status_code=404, detail="Post not found")
+
+#     # Check if the user exists
+#     user = db.query(models.User).filter(models.User.id == interest.user_id).first()
+#     if not user:
+#         raise HTTPException(status_code=404, detail="User not found")
+
+#     # Check if the interest already exists
+#     existing_interest = db.query(models.Interest).filter(models.Interest.user_id == interest.user_id, models.Interest.post_id == interest.post_id).first()
+#     if existing_interest:
+#         raise HTTPException(status_code=400, detail="User has already shown interest in this post")
+
+#     # Create the interest
+#     new_interest = models.Interest(user_id=interest.user_id, post_id=interest.post_id)
+#     db.add(new_interest)
+#     db.commit()
+#     db.refresh(new_interest)
+
+#     return {"message": "Interest recorded successfully", "interest": new_interest}
+
+@app.put("/posts/{post_id}/interest/", response_model=schema.Post)
+def show_interest(post_id: int, username: str, db: Session = Depends(get_db)):
+    post = db.execute(select(models.Post).filter(models.Post.id == post_id))
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+    
+    if username not in post.interested_users:
+        post.interested_users.append(username)
+        db.commit()
+        db.refresh(post)
+    
+    return post
+
+@app.put("/post/show_interest/", response_model=schema.Post)
+def show_interest(
+    id:int , name: str,db: Session = Depends(get_db)
+):
+    return logic.show_interest(db, id, name)
+
 
 @app.get("/drop-database")
 async def drop_database():

@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    Column, Integer, String, ForeignKey, Boolean, Float, Table, DateTime
+    Column, Integer, String, ForeignKey, Boolean, Float, Table, DateTime, JSON
 )
 from sqlalchemy.orm import relationship
 from db import Base
@@ -83,8 +83,11 @@ class Post(Base):
     img = Column(String, nullable=True)
     audio = Column(String, nullable=True)
     video = Column(String, nullable=True)
+    interested_users = Column(JSON, default=list)
 
     photos = relationship("Photo")
+
+
 
 class Ad(Base):
     __tablename__ = "Ads"
