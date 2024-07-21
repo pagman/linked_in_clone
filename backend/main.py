@@ -66,6 +66,40 @@ def create_user(body: schema.UserCreate, db: Session = Depends(get_db)):
 #     return logic.validate_user(db, body.user_id, token)
 
 
+@app.put("/users/{user_id}/change-password")
+def change_password(user_id: int, change_password_request: schema.ChangePasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    # Update the password directly
+    user.password = change_password_request.new_password
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    return {"message": "Password updated successfully"}
+
+@app.put("/users/{user_id}/change-username")
+def change_username(user_id: int, change_username_request: schema.ChangeUsernameRequest, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    
+    existing_user = db.query(models.User).filter(models.User.username == change_username_request.new_username).first()
+    if existing_user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already taken")
+
+    # Update the username directly
+    user.username = change_username_request.new_username
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+
+    return {"message": "Username updated successfully"}
+
 @app.post("/login/", response_model=schema.LoginToken)
 def login(
     body: schema.LoginCredentials, db: Session = Depends(get_db),
@@ -208,9 +242,9 @@ def get_active_coversations(
 @app.get('/Search-post/', response_model=list[schema.Post])
 def Search_auction(
     db: Session = Depends(get_db),
-    query_params: schema.SearchParams = Depends()
+    # query_params: schema.SearchParams = Depends()
 ):
-    return logic.Search_Αuction(db, query_params)
+    return logic.Search_Αuction(db)
 
 
 @app.put("/logout/", response_model=dict)

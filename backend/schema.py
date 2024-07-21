@@ -23,7 +23,11 @@ class Friend(BaseModel):
     requestee_name: str
     status: str = "pending"  # Initial status of friend request
 
+class ChangePasswordRequest(BaseModel):
+    new_password: str
 
+class ChangeUsernameRequest(BaseModel):
+    new_username: str
 
 class User(BaseModel):
     id: int

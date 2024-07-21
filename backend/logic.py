@@ -53,7 +53,7 @@ def login(db, creds):
     db_token = crud.create_object(
         db, models.TokenSession,
         {"token": str(uuid.uuid4()), "active": True, "user_id": db_user.id})
-    return {"token": db_token.token, "role": db_user.role, "user_id": db_user.id}
+    return {"token": db_token.token, "role": creds.username, "user_id": db_user.id}
 
 
 def get_posts(db, token, query_params):

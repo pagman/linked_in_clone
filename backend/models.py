@@ -13,6 +13,7 @@ auction_category = Table(
 )
 
 
+
 class User(Base):
     __tablename__ = "Users"
 
