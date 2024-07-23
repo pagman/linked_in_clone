@@ -25,12 +25,10 @@ function HomePage({ value }) {
     setSelectedCategory(event.target.value);
     if (event.target.value === "all") {
       axios
-        .get("http://localhost:8080/auctions/", {
+        .get("https://localhost:8000/posts/", {
           headers: { token: global.config.user.token },
           params: {
-            skip: page * rowsPerPage,
-            limit: page * rowsPerPage + rowsPerPage,
-            order_by: "ends"
+            token: "aA"
           },
         })
         .then((res) => loadAuctions(res.data))
@@ -38,15 +36,11 @@ function HomePage({ value }) {
     } else {
       axios
         .get(
-          "http://localhost:8080/Search-auction/?category=%5B%22" +
-            event.target.value +
-            "%22%5D",
+          "https://localhost:8000/posts/",
           {
             headers: { token: global.config.user.token },
             params: {
-              skip: page * rowsPerPage,
-              limit: page * rowsPerPage + rowsPerPage,
-              order_by: "ends"
+              token: "aA"
             },
           }
         )
@@ -76,36 +70,24 @@ function HomePage({ value }) {
   useEffect(() => {
     if (value) {
       axios
-        .get("http://localhost:8080/Search-auction/", {
+        .get("https://localhost:8000/posts/", {
           params: {
-            free_text: value,
-            skip: page * rowsPerPage,
-            limit: page * rowsPerPage + rowsPerPage,
-            order_by: "ends"
           },
         })
         .then((res) => loadAuctions(res.data))
         .catch(console.log);
     } else {
       axios
-        .get("http://localhost:8080/auctions/", {
+        .get("https://localhost:8000/posts/", {
           headers: { token: global.config.user.token },
           params: {
-            skip: page * rowsPerPage,
-            limit: page * rowsPerPage + rowsPerPage,
-            order_by: "ends"
           },
         })
         .then((res) => loadAuctions(res.data))
         .catch(console.log);
     }
 
-    axios
-      .get("http://localhost:8080/categories/", {})
-      .then((res) => {
-        setCategory(res.data);
-      })
-      .catch(console.log);
+  
   }, [value]);
 
   if (!list.length) return <div>Loading...</div>;
@@ -116,35 +98,30 @@ function HomePage({ value }) {
         <div>{global.config.user.token}</div>
         <div className="center">
           {" "}
-          <Select  defaultValue="all" label="Age" onChange={handleChange}> 
-            {category.map((item) => (
-              <MenuItem value={item.name}>{item.name}</MenuItem>
-            ))}
-            <MenuItem value="all">All</MenuItem>
-          </Select>
+          
         </div>
         {list
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((item) => (
             <BasicCard
-              key={item.id}
-              header={item.buy_price + "€"}
-              // image={item.photos[0].URL}
-              title={item.name.slice(0, 50)}
-              categories={item.categories[0].name}
-              description={item.description.slice(0, 50)}
-              id={item.id}
+              id = {item.id} 
+              username = {global.config.user.role} 
+              img={item.img}
+              title={item.title}
+              description={item.description}
+              interested_users={item.interested_users}
+              
             />
           ))}
       </div>
-      <TablePagination
+      {/* <TablePagination
         component="div"
         count={parseInt(list[0].id)}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      /> */}
     </center>
   );
 }

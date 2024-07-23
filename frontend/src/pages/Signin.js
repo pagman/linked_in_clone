@@ -48,10 +48,7 @@ function SigninPage({ setShowing, setShowingAdmin }) {
       (formValues.newPassword !== "") &
       (formValues.email !== "") &
       (formValues.lastName !== "") &
-      (formValues.phone !== "") &
-      (formValues.address !== "") &
-      (formValues.country !== "") &
-      (formValues.vat !== "")
+      (formValues.phone !== "") 
     ) {
       axios
         .post("https://localhost:8000/users/", {
@@ -61,10 +58,18 @@ function SigninPage({ setShowing, setShowingAdmin }) {
           name: formValues.name,
           surname: formValues.lastName,
           phone: formValues.phone,
-          location: formValues.address,
           country: formValues.country,
-          afm: formValues.vat,
           role: "user",
+          location: "string",
+          afm: "string",
+          role: "admin",
+          img: "string",
+          work_exp: " ",
+          work_exp_visible: true,
+          education: " ",
+          education_visible: true,
+          expertise: " ",
+          expertise_visible: true
         })
         .then((response) => {
           console.log(response.data);
@@ -194,22 +199,6 @@ function SigninPage({ setShowing, setShowingAdmin }) {
               type="text"
               onChange={handleInputChange}
               label="Country"
-            />
-            <TextField
-              required
-              id="address"
-              name="address"
-              type="text"
-              onChange={handleInputChange}
-              label="Adress"
-            />
-            <TextField
-              required
-              id="vat"
-              name="vat"
-              type="text"
-              onChange={handleInputChange}
-              label="VAT"
             />
           </div>
           <div className="center">
