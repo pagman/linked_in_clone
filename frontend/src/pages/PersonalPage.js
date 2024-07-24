@@ -17,10 +17,7 @@ import axios from "axios";
 import { Button } from "@mui/material";
 import "../config";
 import AddIcon from '@material-ui/icons/Add';
-
-const defaultValues = {
-  bid: 0.0,
-};
+import Checkbox from '@material-ui/core/Checkbox';
 
 function createData(userID, time, amount) {
   return { userID, time, amount };
@@ -31,6 +28,14 @@ const rows = [
   createData("daeveryone", "Dec-10-01 08:1:26)", 7.2),
   createData("danoone", "Dec-10-01 08:26:21)", 8.9),
 ];
+
+const defaultValues = {
+  work_exp: "",
+  work_exp_visible: true,
+  expertise: "",
+  education: "",
+  img: ""
+};
 
 export default function PersonalPage() {
   // const handleMessage = () => {
@@ -95,10 +100,37 @@ export default function PersonalPage() {
       ...formValues,
       [name]: value,
     });
+    
+    console.log(e.target.value);
   };
+  const handleChangeWorkExp = (event) => {
+    setWork_exp_visible(event.target.checked);
+    console.log(work_exp_visible);
+  };
+  const handleEducation = (event) => {
+    setEducation_visible(event.target.checked);
+    console.log(education_visible);
+  };
+  const handleExpertise = (event) => {
+    setExpertise_visible(event.target.checked);
+    console.log(expertise_visible);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formValues);
+    setWork_exp(formValues.work_exp)
+    setEducation(formValues.education)
+    setExpertise(formValues.expertise)
+
+    console.log(formValues.work_exp);
+    console.log(work_exp_visible);
+    console.log(formValues.education);
+    console.log(education_visible);
+    console.log(formValues.expertise);
+    console.log(expertise_visible);
+    console.log(img)
+
+
   };
   React.useEffect(() => {
     axios
@@ -122,6 +154,7 @@ export default function PersonalPage() {
     <div className="center">
       <div>{global.config.user.id}</div> 
       <div>{username}</div> 
+      <div>{work_exp_visible}</div> 
       <div>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
@@ -145,18 +178,41 @@ export default function PersonalPage() {
                   autoComplete="off"
                 >
                   <TextField
-                    required
-                    id="bid"
-                    name="bid"
-                    type="number"
-                    onChange={handleInputChange}
-                    label={currentBid}
-                  />
-                  <AlertDialog
-                    inactive={false}
-                    bidValue={formValues.bid}
-                    auction_id={id}
-                  />
+              required
+              multiline
+              rows={4}
+              id="work_exp"
+              name="work_exp"
+              type="text"
+              onChange={handleInputChange}
+              label="Work experience"
+            />
+            <Checkbox checked={work_exp_visible} onChange={handleChangeWorkExp} name="work_exp_visible" />
+            <TextField
+              required
+              multiline
+              rows={4}
+              id="education"
+              name="education"
+              type="text"
+              onChange={handleInputChange}
+              label="Education"
+            />
+            <Checkbox checked={education_visible} onChange={handleEducation} name="education_visible" />
+            <TextField
+              required
+              multiline
+              rows={4}
+              id="expertise"
+              name="expertise"
+              type="text"
+              onChange={handleInputChange}
+              label="Expertise"
+            />
+            <Checkbox checked={expertise_visible} onChange={handleExpertise} name="expertise_visible" />
+                  <Button disabled={false} variant="outlined" type="submit">
+              Submit
+            </Button>
                 </Box>
               </div>
               <div className="center">
