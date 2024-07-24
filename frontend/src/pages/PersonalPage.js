@@ -79,6 +79,7 @@ export default function PersonalPage() {
   );
   const [winner, setWinner] = React.useState(false);
   const [currentBid, setCurrentBid] = React.useState(0);
+  const [file, setFile] = useState();
 
   const navigate = useNavigate();
 
@@ -111,6 +112,11 @@ export default function PersonalPage() {
       .catch(console.log);
   }, []);
 
+  function uploadImage(e) {
+    console.log(e.target.files[0]);
+    setImg(URL.createObjectURL(e.target.files[0]));
+}
+
 
   return (
     <div className="center">
@@ -123,13 +129,7 @@ export default function PersonalPage() {
               <center>
                 {" "}
                 <img className="shopImg" src={img} alt="new" />
-                <Button
-          variant="outlined"
-          startIcon={<AddIcon />}
-          // onClick={(e) => doSomethingWithInputPass(e)}
-        >
-        change Image
-        </Button>
+        <input type="file" onChange={uploadImage} />
               </center>
             </Grid>
             <Grid item xs={6}>
