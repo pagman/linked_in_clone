@@ -85,7 +85,7 @@ class Post(Base):
     audio = Column(String, nullable=True)
     video = Column(String, nullable=True)
     interested_users = Column(JSON, default=list)
-
+    comments = Column(JSON, default=list)
     photos = relationship("Photo")
 
 

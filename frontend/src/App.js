@@ -6,13 +6,14 @@ import HomePage from "./pages/Homepage";
 import SigninPage from "./pages/Signin";
 import AccountPage from "./pages/Account";
 import SearchAppBar from "./components/navbar";
-import ProductPage from "./pages/productPage";
+import PersonalPage from "./pages/PersonalPage";
 import AllUsersPage from "./pages/AllUsers";
 import Chat from "./pages/Chat";
 import UserDetailsPage from "./pages/UserDetails";
 import MyAccountPage from "./pages/MyAccountPage";
 import AddAuctionPage from "./pages/AddAuctionPage";
 import EditAuctionPage from "./pages/EditAuctionPage";
+import SettingsPage from "./pages/Settings";
 import Cookies from "universal-cookie";
 import "./config"
 
@@ -28,6 +29,7 @@ function App() {
 
   global.config.user.token = cookies.get("token");
   global.config.user.role = cookies.get("role");
+  global.config.user.id = cookies.get("id");
 
   useEffect(() => {
     document.title = "Auction site"
@@ -45,13 +47,14 @@ function App() {
         {/* <Route path="/" element={<SigninPage setShowing={setShowing}  setShowingAdmin={setShowingAdmin} />} /> */}
         <Route path="/account/" element={<AccountPage />} />
         <Route path="/signin" element={<SigninPage setShowing={setShowing}  setShowingAdmin={setShowingAdmin}/>} />
-        <Route path="/product/:id" element={<ProductPage />} />
+        {/* <Route path="/product/:id" element={<ProductPage />} /> */}
         <Route path="/allusers" element={<AllUsersPage />} />
         <Route exact path="/chat/:id" element={<Chat />} />
-        <Route path="/myaccount" element={<MyAccountPage />} />
+        <Route path="/myaccount" element={<PersonalPage />} />
         <Route path="/addauction" element={<AddAuctionPage />} />
         <Route exact path="/editauction/:id" element={<EditAuctionPage />} />
         <Route exact path="/userdetails/:id" element={<UserDetailsPage />} />
+        <Route exact path="/settings/" element={<SettingsPage />} />
       </Routes>
     </div>
   );

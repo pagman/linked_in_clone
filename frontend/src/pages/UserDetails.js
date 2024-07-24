@@ -32,17 +32,6 @@ function UserDetailsPage() {
 
   let { id } = useParams();
 
-    function acceptHandler(x){
-        console.log(x);
-        axios.put(
-        "http://localhost:8080/admin/validate-user/", 
-        {user_id:id}, 
-        {headers: { token: global.config.user.token }}
-    )
-    .then(r => console.log(r.status))
-    .catch(e => console.log(e));
-    
-    }
     function denyHandler(x){
         console.log(x);
     
@@ -50,7 +39,7 @@ function UserDetailsPage() {
 
     useEffect(() => {
       axios
-        .get("http://localhost:8080/users/", {
+        .get("https://localhost:8000/users/", {
           headers: { token: global.config.user.token },
         })
         .then((res) => loadUsers(res.data))
@@ -62,65 +51,37 @@ function UserDetailsPage() {
   
   return (
     <div className="center">
-      <div>{global.config.user.token}</div>
+      {/* <div>{global.config.user.token}</div> */}
       
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Item>{list[list.length-id].id}</Item>
+            <Item>{list[id-1].id}</Item>
           </Grid>
           <Grid item xs={6}>
-            <Item>{list[list.length-id].name}</Item>
+            <Item>{list[id-1].name}</Item>
           </Grid>
           <Grid item xs={6}>
-            <Item>{list[list.length-id].surname}</Item>
+            <Item>{list[id-1].surname}</Item>
           </Grid>
           <Grid item xs={6}>
-            <Item>{list[list.length-id].email}</Item>
+            <Item>{list[id-1].email}</Item>
           </Grid>
           <Grid item xs={6}>
-            <Item>{list[list.length-id].phone}</Item>
+            <Item>{list[id-1].phone}</Item>
           </Grid>
           <Grid item xs={6}>
-            <Item>{list[list.length-id].location}</Item>
+            <Item>{list[id-1].country}</Item>
           </Grid>
           <Grid item xs={6}>
-            <Item>{list[list.length-id].afm}</Item>
+            <Item>{list[id-1].work_exp}</Item>
           </Grid>
-          <Grid item xs={12}>
-            <Item>{list[list.length-id].validated.toString()}</Item>
+          <Grid item xs={6}>
+            <Item>{list[id-1].education}</Item>
           </Grid>
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: "100vh" }}
-            item
-            xs={6}
-          >
-            <Button onClick={() => acceptHandler("Accepted")} variant="contained">Accept</Button>
+          <Grid item xs={6}>
+            <Item>{list[id-1].expertise}</Item>
           </Grid>
-          <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: "100vh" }}
-            item
-            xs={6}
-          >
-            <Button 
-            onClick={() => denyHandler("Denied")}
-              style={{
-                backgroundColor: '#b2102f',
-              }}
-              variant="contained"
-            >
-              Deny
-            </Button>
-          </Grid>
+          
         </Grid>
       
     </div>

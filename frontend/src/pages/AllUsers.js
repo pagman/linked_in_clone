@@ -26,7 +26,7 @@ function AllUsersPage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/users/", {
+      .get("https://localhost:8000/users/", {
         headers: { token: global.config.user.token },
       })
       .then((res) => loadUsers(res.data))

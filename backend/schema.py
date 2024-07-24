@@ -138,6 +138,7 @@ class Post(BaseModel):
     audio: str = Field(default=" ")
     video: str = Field(default=" ")
     interested_users: List[str] = Field(default=[""])
+    comments: List[str] = Field(default=[""])
     
  
     class Config:

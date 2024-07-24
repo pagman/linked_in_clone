@@ -371,6 +371,12 @@ def show_interest(
 ):
     return logic.show_interest(db, id, name)
 
+@app.put("/post/add_comment/", response_model=schema.Post)
+def add_comments(
+    id:int , comments: str,db: Session = Depends(get_db)
+):
+    return logic.add_comments(db, id, comments)
+
 
 @app.get("/drop-database")
 async def drop_database():

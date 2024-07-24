@@ -207,7 +207,7 @@ export default function SearchAppBar({
             </Link>
           ) : null}
           {showing ? (
-            <Link style={{ textDecoration: "none" }} to="/chat/0">
+            <Link style={{ textDecoration: "none" }} to="/settings">
               <Button
                 variant="text"
                 style={{

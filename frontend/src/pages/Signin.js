@@ -94,14 +94,19 @@ function SigninPage({ setShowing, setShowingAdmin }) {
         password: formValues.password,
       })
       .then((response) => {
-        console.log(response.data.role, response.data.token);
+        console.log(response.data.role, response.data.token, response.data.user_id);
         global.config.user.token = response.data.token;
         global.config.user.role = response.data.role;
+        global.config.user.id = response.data.user_id;
         cookies.set("token", response.data.token, {
           path: "/",
           expires: nextYear,
         });
         cookies.set("role", response.data.role, {
+          path: "/",
+          expires: nextYear,
+        });
+        cookies.set("id", response.data.user_id, {
           path: "/",
           expires: nextYear,
         });
@@ -118,6 +123,7 @@ function SigninPage({ setShowing, setShowingAdmin }) {
         setlogInError(true);
         console.error("There was an error!", error);
       });
+      console.log(global.config.user.id)
   };
 
   return (

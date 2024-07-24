@@ -43,6 +43,17 @@ def show_interest(db, postid,name):
     print("-----------------------------------------")
     return crud.edit_object(db, db_user, {"interested_users": db_user.interested_users+[name]})
 
+def add_comments(db, postid,comments):
+    # utils._token_is_admin(db, token)
+    db_user = crud.get_object_or_none(
+        db, models.Post, filters={"id": postid})
+    if not db_user:
+        raise errors.JsonException(errors.USER_NOT_FOUND, code=404)
+    print("-----------------------------------------")
+    print(db_user.comments)
+    print("-----------------------------------------")
+    return crud.edit_object(db, db_user, {"comments": db_user.interested_users+[comments]})
+
 
 def login(db, creds):
     db_user = crud.get_object_or_none(
