@@ -129,6 +129,23 @@ export default function PersonalPage() {
     console.log(formValues.expertise);
     console.log(expertise_visible);
     console.log(img)
+    axios
+        .put("https://localhost:8000/update-user/1", {
+          work_exp: formValues.work_exp,
+          work_exp_visible: work_exp_visible,
+          education: formValues.education,
+          education_visible: education_visible,
+          expertise: formValues.expertise,
+          expertise_visible: expertise_visible,
+          img:img
+        })
+        .then((response) => {
+          console.log(response.data);
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+        });
 
 
   };
@@ -139,6 +156,14 @@ export default function PersonalPage() {
       .then((res) => {
         // loadAuctions(res.data);
         setUsername(res.data.username);
+        setImg(res.data.img)
+        setWork_exp(res.data.work_exp)
+        setEducation(res.data.education)
+        setExpertise(res.data.expertise)
+        setWork_exp_visible(res.data.work_exp_visible)
+        setEducation_visible(res.data.education_visible)
+        setExpertise_visible(res.data.expertise_visible)
+
         console.log(res.data.name);
       })
       .catch(console.log);
@@ -185,7 +210,7 @@ export default function PersonalPage() {
               name="work_exp"
               type="text"
               onChange={handleInputChange}
-              label="Work experience"
+              label={work_exp}
             />
             <Checkbox checked={work_exp_visible} onChange={handleChangeWorkExp} name="work_exp_visible" />
             <TextField
@@ -196,7 +221,7 @@ export default function PersonalPage() {
               name="education"
               type="text"
               onChange={handleInputChange}
-              label="Education"
+              label={education}
             />
             <Checkbox checked={education_visible} onChange={handleEducation} name="education_visible" />
             <TextField
@@ -207,7 +232,7 @@ export default function PersonalPage() {
               name="expertise"
               type="text"
               onChange={handleInputChange}
-              label="Expertise"
+              label={expertise}
             />
             <Checkbox checked={expertise_visible} onChange={handleExpertise} name="expertise_visible" />
                   <Button disabled={false} variant="outlined" type="submit">

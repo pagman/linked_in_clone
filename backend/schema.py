@@ -26,6 +26,15 @@ class Friend(BaseModel):
 class ChangePasswordRequest(BaseModel):
     new_password: str
 
+class UserUpdate(BaseModel):
+    work_exp: str = Field(default=" ")
+    work_exp_visible: bool = Field(default=True)
+    education: str = Field(default=" ")
+    education_visible: bool = Field(default=True)
+    expertise: str = Field(default=" ")
+    expertise_visible: bool = Field(default=True)
+    img: str
+
 class ChangeUsernameRequest(BaseModel):
     new_username: str
 

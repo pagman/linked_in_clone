@@ -100,6 +100,27 @@ def change_username(user_id: int, change_username_request: schema.ChangeUsername
 
     return {"message": "Username updated successfully"}
 
+@app.put("/update-user/{user_id}")
+def update_user(user_id: int, user_update: schema.UserUpdate, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Update the user fields
+    user.work_exp = user_update.work_exp
+    user.work_exp_visible = user_update.work_exp_visible
+    user.education = user_update.education
+    user.education_visible = user_update.education_visible
+    user.expertise = user_update.expertise
+    user.expertise_visible = user_update.expertise_visible
+    user.img = user_update.img
+
+    db.commit()
+    db.refresh(user)
+
+    return user
+
 @app.post("/login/", response_model=schema.LoginToken)
 def login(
     body: schema.LoginCredentials, db: Session = Depends(get_db),
