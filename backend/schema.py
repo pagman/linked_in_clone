@@ -171,12 +171,22 @@ class PostWithInterests(BaseModel):
     class Config:
         orm_mode: True
 
+class AdWithInterests(BaseModel):
+    id: int
+    title: str
+    content: str
+    interests: List[Interest] = []
+
+    class Config:
+        orm_mode: True
+
 class Ad(BaseModel):
     id: int
     title: str
     description: str = Field(default=" ")
     user_id: int
     img: str = Field(default=" ")
+    interested_users: List[str] = Field(default=[""])
  
     class Config:
         from_attributes = True

@@ -373,24 +373,31 @@ def get_friends(user_id: int, db: Session = Depends(get_db)):
 
 #     return {"message": "Interest recorded successfully", "interest": new_interest}
 
-@app.put("/posts/{post_id}/interest/", response_model=schema.Post)
-def show_interest(post_id: int, username: str, db: Session = Depends(get_db)):
-    post = db.execute(select(models.Post).filter(models.Post.id == post_id))
-    if not post:
-        raise HTTPException(status_code=404, detail="Post not found")
+# @app.put("/posts/{post_id}/interest/", response_model=schema.Post)
+# def show_interest(post_id: int, username: str, db: Session = Depends(get_db)):
+#     post = db.execute(select(models.Post).filter(models.Post.id == post_id))
+#     if not post:
+#         raise HTTPException(status_code=404, detail="Post not found")
     
-    if username not in post.interested_users:
-        post.interested_users.append(username)
-        db.commit()
-        db.refresh(post)
+#     if username not in post.interested_users:
+#         post.interested_users.append(username)
+#         db.commit()
+#         db.refresh(post)
     
-    return post
+#     return post
+
 
 @app.put("/post/show_interest/", response_model=schema.Post)
 def show_interest(
     id:int , name: str,db: Session = Depends(get_db)
 ):
     return logic.show_interest(db, id, name)
+
+@app.put("/ad/show_interest/", response_model=schema.Ad)
+def show_ad_interest(
+    id:int , name: str,db: Session = Depends(get_db)
+):
+    return logic.show_ad_interest(db, id, name)
 
 @app.put("/post/add_comment/", response_model=schema.Post)
 def add_comments(

@@ -10,19 +10,29 @@ import { Link } from "react-router-dom";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import IconButton from '@material-ui/core/IconButton';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import AlertDialog from "../components/dialog";
 
 
 
 
 export default function BasicCard(props) {
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-    axios.put('https://localhost:8000/post/show_interest/?id='+props.id+'&name='+props.username,
+    axios.put('https://localhost:8000/ad/show_interest/?id='+props.id+'&name='+props.username,
         {
         
-        }).catch(console.log);
+        }).then((response) => {
+          console.log(response.data);
+          navigate("/ads");
+        })
+        .catch(console.log);
     console.log("liked");
   }
+
+  console.log(props.interested_users)
+  
   
   return (
     <div className = 'myCard'>
@@ -49,10 +59,15 @@ export default function BasicCard(props) {
           <FavoriteIcon />
         </IconButton>
         </Button>
-        <Typography variant="body2">
+        {/* <Typography variant="body2">
         {props.interested_users.slice(0,1)}
           <br />
-        </Typography>
+        </Typography> */}
+        <AlertDialog
+                    inactive={false}
+                    interested_users={props.interested_users}
+                  />
+        
       {/* <Link style={{ textDecoration: "none" }} to={"/product/"+props.id}>
         <Button size="small">Learn More</Button>
       </Link> */}

@@ -10,46 +10,26 @@ import "../config";
 
 export default function AlertDialog(props) {
   const [open, setOpen] = React.useState(false);
+  const listItems = props.interested_users.map((d) => <li key={d}>{d}</li>);
+  console.log(listItems);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
-    console.log(props.auction_id);
     setOpen(false);
-    let nodeDate = require("date-and-time");
-    let now = nodeDate.format(new Date(), "YYYY-MM-DDThh:mm:ss");
-    console.log(now);
-    console.log(props.bidValue)
-    axios
-      .post(
-        "http://localhost:8080/bid/",
-        {
-          auction_id: props.auction_id,
-          time: now.toString(),
-          amount: props.bidValue,
-        },
-        {
-          headers: { token: global.config.user.token },
-        }
-      )
-      .then((response) => {
-        console.log(response.data.role, response.data.token);
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    
   };
 
   return (
     <div>
       <Button
         disabled={props.inactive}
-        variant="contained"
+        variant="outlined"
         onClick={handleClickOpen}
       >
-        Bid
+        show likes
       </Button>
       <Dialog
         open={open}
@@ -57,15 +37,17 @@ export default function AlertDialog(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Likes"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            After pressing submit you cannot change the bid.
+          <div>
+          {listItems }
+            </div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} autoFocus>
-            Submit
+            Close
           </Button>
         </DialogActions>
       </Dialog>

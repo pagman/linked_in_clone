@@ -171,7 +171,7 @@ export default function PersonalPage() {
 
   function uploadImage(e) {
     console.log(e.target.files[0]);
-    setImg(URL.createObjectURL(e.target.files[0]));
+    setImg(e.target.files[0].name);
 }
 
 
@@ -186,7 +186,7 @@ export default function PersonalPage() {
             <Grid item xs={6}>
               <center>
                 {" "}
-                <img className="shopImg" src={img} alt="new" />
+                <img className="shopImg" src={"/"+img} alt="new" />
         <input type="file" onChange={uploadImage} />
               </center>
             </Grid>

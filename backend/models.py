@@ -98,6 +98,7 @@ class Ad(Base):
     user_id = Column(Integer, ForeignKey("Users.id"), nullable=False)
     user = relationship("User")
     img = Column(String, nullable=True)
+    interested_users = Column(JSON, default=list)
 
     # photos = relationship("Photo")
 

@@ -3,6 +3,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Homepage";
+import AdsPage from "./pages/Adspage";
 import SigninPage from "./pages/Signin";
 import AccountPage from "./pages/Account";
 import SearchAppBar from "./components/navbar";
@@ -44,6 +45,7 @@ function App() {
       <SearchAppBar value={value} setValue={setValue} showing={showing} showingAdmin={showingAdmin} setShowing={setShowing}  setShowingAdmin={setShowingAdmin} />
       <Routes>
         <Route path="/" element={<HomePage value={value} />} />
+        <Route path="/ads" element={<AdsPage value={value} />} />
         {/* <Route path="/" element={<SigninPage setShowing={setShowing}  setShowingAdmin={setShowingAdmin} />} /> */}
         <Route path="/account/" element={<AccountPage />} />
         <Route path="/signin" element={<SigninPage setShowing={setShowing}  setShowingAdmin={setShowingAdmin}/>} />
