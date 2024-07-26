@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
-import BasicCard from "../components/Card";
+import Post from "../components/Post";
+import AddPost from "../components/addPost";
 import TablePagination from "@mui/material/TablePagination";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,44 +13,15 @@ import axios from "axios";
 import "../config";
 import { maxWidth } from "@mui/system";
 
+
 function HomePage({ value }) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [list, setList] = React.useState([]);
   const [category, setCategory] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedCategory, setSelectedCategory] = React.useState(" ");
 
-  const handleChange = (event) => {
-    console.log(event.target.value);
-    setSelectedCategory(event.target.value);
-    if (event.target.value === "all") {
-      axios
-        .get("https://localhost:8000/posts/", {
-          headers: { token: global.config.user.token },
-          params: {
-            token: "aA"
-          },
-        })
-        .then((res) => loadAuctions(res.data))
-        .catch(console.log);
-    } else {
-      axios
-        .get(
-          "https://localhost:8000/posts/",
-          {
-            headers: { token: global.config.user.token },
-            params: {
-              token: "aA"
-            },
-          }
-        )
-        .then((res) => loadAuctions(res.data))
-        .catch(console.log);
-    }
-  };
 
-  function loadAuctions(data) {
+  function loadPosts(data) {
     setList(data);
   }
 
@@ -59,13 +31,6 @@ function HomePage({ value }) {
     console.log("no value");
   }
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   useEffect(() => {
     if (value) {
@@ -74,7 +39,7 @@ function HomePage({ value }) {
           params: {
           },
         })
-        .then((res) => loadAuctions(res.data))
+        .then((res) => loadPosts(res.data))
         .catch(console.log);
     } else {
       axios
@@ -83,7 +48,7 @@ function HomePage({ value }) {
           params: {
           },
         })
-        .then((res) => loadAuctions(res.data))
+        .then((res) => loadPosts(res.data))
         .catch(console.log);
     }
 
@@ -92,23 +57,31 @@ function HomePage({ value }) {
 
   if (!list.length) return <div>Loading...</div>;
 
+  
+
+
   return (
     <center>
       <div>
-        <div>{global.config.user.token}</div>
+        <div></div>
         <div className="center">
           {" "}
+          <AddPost
+          inactive={false}>          
+          </AddPost>
           
         </div>
-        {list
-          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-          .map((item) => (
-            <BasicCard
+        
+
+        {list.map((item) => (
+            <Post
               id = {item.id} 
               username = {global.config.user.role} 
               img={item.img}
               title={item.title}
               description={item.description}
+              audio={item.audio}
+              video={item.video}
               interested_users={item.interested_users}
               
             />

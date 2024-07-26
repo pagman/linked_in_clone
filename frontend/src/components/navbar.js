@@ -10,6 +10,16 @@ import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
 import Cookies from "universal-cookie";
 import "../config";
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,6 +72,7 @@ export default function SearchAppBar({
   setShowingAdmin,
 }) {
   const cookies = new Cookies();
+  
   if (cookies.get("role") === "admin") {
     setShowingAdmin(true);
     setShowing(true);
@@ -74,7 +85,32 @@ export default function SearchAppBar({
     console.log(event.target.value);
     setValue(event.target.value)
 };
+const [open, setOpen] = React.useState(false);
 
+  const toggleDrawer = () => () => {
+    setOpen(!open);
+  };
+
+  const DrawerList = (
+    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <List>
+        <Link style={{ textDecoration: "none" }} to="/myaccount">        
+      <ListItem key="1" disablePadding>
+            <ListItemButton>              
+              <ListItemText primary="My Account" />
+            </ListItemButton>
+          </ListItem>
+          </Link>
+          <Link style={{ textDecoration: "none" }} to="/myaccount">
+          <ListItem key="2" disablePadding>
+            <ListItemButton>              
+              <ListItemText primary="Network" />
+            </ListItemButton>
+          </ListItem>    
+          </Link>
+      </List>
+    </Box>
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -86,10 +122,12 @@ export default function SearchAppBar({
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
+            <Button style={{ color: "white" }} variant="outlined"  onClick={toggleDrawer(true) }><MenuIcon/></Button>
             <Link style={{ color: "white", textDecoration: "none" }} to="/">
               Ergasia TEDI
             </Link>
           </Typography>
+          
 
           {/* <Link style={{ textDecoration: "none" }} to="/signin">
             <Button
@@ -142,19 +180,6 @@ export default function SearchAppBar({
             </Link>
           ) : null}
           {showing ? (
-            <Link style={{ textDecoration: "none" }} to="/chat/0">
-              <Button
-                variant="text"
-                style={{
-                  color: "white",
-                  fontSize: "15px",
-                }}
-              >
-                Network
-              </Button>
-            </Link>
-          ) : null}
-          {showing ? (
             <Link style={{ textDecoration: "none" }} to="/ads">
               <Button
                 variant="text"
@@ -194,19 +219,6 @@ export default function SearchAppBar({
             </Link>
           ) : null}
           {showing ? (
-            <Link style={{ textDecoration: "none" }} to="/myaccount">
-              <Button
-                variant="text"
-                style={{
-                  color: "white",
-                  fontSize: "15px",
-                }}
-              >
-                My Account
-              </Button>
-            </Link>
-          ) : null}
-          {showing ? (
             <Link style={{ textDecoration: "none" }} to="/settings">
               <Button
                 variant="text"
@@ -219,20 +231,12 @@ export default function SearchAppBar({
               </Button>
             </Link>
           ) : null}
-          <Search
-            onClick={() => {
-              console.log(value);
-            }}
-          >
-            <SearchIconWrapper>
-              <SearchIcon  />
-            </SearchIconWrapper>
-            <StyledInputBase
-              onChange={handleChange}
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+          <div>
+      
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
+    </div>
         </Toolbar>
       </AppBar>
     </Box>
