@@ -76,8 +76,7 @@ export default function SearchAppBar({
   if (cookies.get("role") === "admin") {
     setShowingAdmin(true);
     setShowing(true);
-  }
-  if (cookies.get("role") === "User") {
+  }else if (typeof cookies.get("role")=== 'string') {
     setShowing(true);
   }
 
@@ -101,7 +100,7 @@ const [open, setOpen] = React.useState(false);
             </ListItemButton>
           </ListItem>
           </Link>
-          <Link style={{ textDecoration: "none" }} to="/myaccount">
+          <Link style={{ textDecoration: "none" }} to="/network">
           <ListItem key="2" disablePadding>
             <ListItemButton>              
               <ListItemText primary="Network" />

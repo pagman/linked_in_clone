@@ -59,7 +59,7 @@ function Chat() {
     if (parseInt(id.split("A")[0]) !== 0) {
       axios
         .post(
-          "http://localhost:8080/message/",
+          "https://localhost:8000/message/",
           {
             receiver_id: parseInt(id.split("A")[0]),
             message: x,
@@ -78,7 +78,7 @@ function Chat() {
     if (parseInt(receiver) !== 0) {
       axios
         .post(
-          "http://localhost:8080/message/",
+          "https://localhost:8000/message/",
           {
             receiver_id: parseInt(receiver),
             message: x,
@@ -98,7 +98,7 @@ function Chat() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/unread-messages/", {
+      .get("https://localhost:8000/unread-messages/", {
         headers: { token: global.config.user.token },
       })
       .then((res) => {
@@ -107,7 +107,7 @@ function Chat() {
       .catch(console.log);
 
     axios
-      .get("http://localhost:8080/active-conversations/", {
+      .get("https://localhost:8000/active-conversations/", {
         headers: { token: global.config.user.token },
       })
       .then((res) => {
@@ -116,14 +116,14 @@ function Chat() {
       .catch(console.log);
   }, []);
 
-  if (messages === []) return <div>Loading...</div>;
-  if (active === []) return <div>Loading...</div>;
+  // if (messages === []) return <div>Loading...</div>;
+  // if (active === []) return <div>Loading...</div>;
 
   return (
     <div style={{ position: "relative", height: "500px" }}>
-      <div>seller id {id.split("A")[0]}</div>
-      <div>auction id {id.split("A")[1]}</div>
-      <div>receiver id {receiver}</div>
+      <div>sender id {id.split("A")[0]}</div>
+      <div>receiver id {id.split("A")[1]}</div>
+      <div>receiver id: {receiver}</div>
       <MainContainer>
         <ChatContainer>
           <MessageList>
@@ -171,7 +171,7 @@ function Chat() {
                 color="error"
                 onClick={() => {
                   axios
-                    .delete("http://localhost:8080/delete-message/"+value.id+"/", {
+                    .delete("https://localhost:800/delete-message/"+value.id+"/", {
                       headers: { token: global.config.user.token },
                     })
                     .then((res) => {

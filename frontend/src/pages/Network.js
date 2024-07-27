@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect } from "react";
-import Post from "../components/Post";
+import UsersCard from "../components/UsersCard";
 import AddPost from "../components/addPost";
 import TablePagination from "@mui/material/TablePagination";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,15 +14,23 @@ import "../config";
 import { maxWidth } from "@mui/system";
 
 
-function HomePage({ value }) {
+function Network({ value }) {
   const [list, setList] = React.useState([]);
+  const [friends, setfriends] = React.useState([]);
   const [category, setCategory] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedCategory, setSelectedCategory] = React.useState(" ");
 
 
-  function loadPosts(data) {
+  function loadUsers(data) {
     setList(data);
+  }
+
+  function loadFriends(data) {
+    // console.log("-----------------")
+    // console.log(data[0].requestee_name)
+    // console.log("-----------------")
+    setfriends(data);
   }
 
   if (value) {
@@ -39,18 +47,32 @@ function HomePage({ value }) {
           params: {
           },
         })
-        .then((res) => loadPosts(res.data))
+        .then((res) => loadUsers(res.data))
         .catch(console.log);
     } else {
       axios
-        .get("https://localhost:8000/posts/", {
+        .get("https://localhost:8000/users/", {
           headers: { token: global.config.user.token },
           params: {
           },
         })
-        .then((res) => loadPosts(res.data))
+        .then((res) => loadUsers(res.data))
         .catch(console.log);
     }
+
+  
+  }, [value]);
+
+  useEffect(() => {
+   axios
+        .get("https://localhost:8000/users/"+global.config.user.id+"/friends", {
+          headers: { token: global.config.user.token },
+          params: {
+          },
+        })
+        .then((res) => loadFriends(res.data))
+        .catch(console.log);
+    
 
   
   }, [value]);
@@ -65,24 +87,29 @@ function HomePage({ value }) {
       <div>
         <div></div>
         <div className="center">
-          {global.config.user.role}
-          <AddPost
-          inactive={false}>          
-          </AddPost>
-          
+          {"Network"}          
+        </div>
+        <div className="center">
+          {global.config.user.token}          
         </div>
         
 
         {list.map((item) => (
-            <Post
+            <UsersCard
               id = {item.id} 
-              username = {global.config.user.role} 
+              username = {item.username} 
+              usernamerole = {global.config.user.role} 
               img={item.img}
-              title={item.title}
-              description={item.description}
-              audio={item.audio}
-              video={item.video}
-              interested_users={item.interested_users}
+              name={item.name}
+              surname={item.surname}
+              work_exp={item.work_exp}
+              work_exp_visible={item.work_exp_visible}
+              education={item.education}
+              education_visible={item.education_visible}
+              expertise={item.expertise}
+              expertise_visible={item.expertise_visible}
+              visible={true}
+              friends={friends}
               
             />
           ))}
@@ -99,4 +126,4 @@ function HomePage({ value }) {
   );
 }
 
-export default HomePage;
+export default Network;
