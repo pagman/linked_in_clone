@@ -205,7 +205,7 @@ const [open, setOpen] = React.useState(false);
             </Link>
           ) : null}
           {showing ? (
-            <Link style={{ textDecoration: "none" }} to="/chat/0">
+            <Link style={{ textDecoration: "none" }} to="/notifications">
               <Button
                 variant="text"
                 style={{

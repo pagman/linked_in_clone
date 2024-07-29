@@ -63,7 +63,7 @@ def add_comments(db, postid,comments):
     print("-----------------------------------------")
     print(db_user.comments)
     print("-----------------------------------------")
-    return crud.edit_object(db, db_user, {"comments": db_user.interested_users+[comments]})
+    return crud.edit_object(db, db_user, {"comments": db_user.comments+[comments]})
 
 
 def login(db, creds):

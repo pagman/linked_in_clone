@@ -65,7 +65,7 @@ function HomePage({ value }) {
       <div>
         <div></div>
         <div className="center">
-          {global.config.user.role}
+          {global.config.user.token}
           <AddPost
           inactive={false}>          
           </AddPost>
@@ -83,6 +83,7 @@ function HomePage({ value }) {
               audio={item.audio}
               video={item.video}
               interested_users={item.interested_users}
+              comments={item.comments}
               
             />
           ))}

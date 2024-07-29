@@ -12,6 +12,7 @@ import PersonalPage from "./pages/PersonalPage";
 import AllUsersPage from "./pages/AllUsers";
 import Chat from "./pages/Chat";
 import UserDetailsPage from "./pages/UserDetails";
+import NotificationsPage from "./pages/Notifications";
 import MyAccountPage from "./pages/MyAccountPage";
 import AddAuctionPage from "./pages/AddAuctionPage";
 import EditAuctionPage from "./pages/EditAuctionPage";
@@ -59,6 +60,7 @@ function App() {
         <Route exact path="/editauction/:id" element={<EditAuctionPage />} />
         <Route exact path="/userdetails/:id" element={<UserDetailsPage />} />
         <Route exact path="/settings/" element={<SettingsPage />} />
+        <Route exact path="/notifications/" element={<NotificationsPage />} />
       </Routes>
     </div>
   );

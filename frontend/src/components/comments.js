@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
 import "../config";
 
-export default function AlertDialog(props) {
+export default function AlertDialogComments(props) {
   const [open, setOpen] = React.useState(false);
   const listItems = props.interested_users.map((d) => <li key={d}>{d}</li>);
   console.log(listItems);
@@ -22,7 +22,6 @@ export default function AlertDialog(props) {
     
   };
 
-
   return (
     <div>
       <Button
@@ -30,7 +29,7 @@ export default function AlertDialog(props) {
         variant="outlined"
         onClick={handleClickOpen}
       >
-        show likes
+        Comments
       </Button>
       <Dialog
         open={open}
@@ -38,7 +37,7 @@ export default function AlertDialog(props) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Likes"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Comments"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
           <div>

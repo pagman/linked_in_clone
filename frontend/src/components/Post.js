@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from "react";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -12,14 +12,43 @@ import IconButton from '@material-ui/core/IconButton';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AlertDialog from "./dialog";
+import AlertDialogComments from "./comments";
 import MultiPlayer from "../components/useMultiAudio";
+import TextField from "@mui/material/TextField";
 
 
+
+const defaultValues = {
+  comment: "",
+};
 
 
 export default function Post(props) {
   const navigate = useNavigate();
+  const [formValues, setFormValues] = useState(defaultValues);
   
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+  const handleComment = (event) => {
+    console.log(props.id)
+    console.log(formValues);
+    axios
+        .put('https://localhost:8000/post/add_comment/?id='+props.id+'&comments='+formValues.comment, {
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("There was an error!", error);
+        });
+    };
+
 
   const handleSubmit = (e) => {
     axios.put('https://localhost:8000/post/show_interest/?id='+props.id+'&name='+props.username,
@@ -86,11 +115,33 @@ export default function Post(props) {
                     inactive={false}
                     interested_users={props.interested_users}
                   />
+        <AlertDialogComments
+                    inactive={false}
+                    interested_users={props.comments}
+                  />
+        
         
       {/* <Link style={{ textDecoration: "none" }} to={"/product/"+props.id}>
         <Button size="small">Learn More</Button>
       </Link> */}
       </CardActions>
+      <div>
+        <TextField
+              required
+              id="comment"
+              name="comment"
+              type="text"
+              onChange={handleInputChange}
+              label="Add comment"
+            />
+            <Button
+        disabled={props.inactive}
+        variant="outlined"
+        onClick={e => { handleComment(props) }}
+      >
+        Add
+      </Button>
+        </div>
     </Card>
     </div>
   );
