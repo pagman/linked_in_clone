@@ -4,6 +4,7 @@ import TablePagination from "@mui/material/TablePagination";
 import UserCard from "../components/userCard";
 import axios from "axios";
 import "../config";
+import Button from "@mui/material/Button";
 
 
 
@@ -15,6 +16,32 @@ function AllUsersPage() {
   function loadUsers(data) {
     setList(data);
   }
+
+  const handleDownload = () => {
+    console.log('pressed')
+    axios.get("https://localhost:8000/users/", {
+      headers: { token: global.config.user.token, 'media-type': 'application/xml' },      
+    })
+    .then((response) => response.data)
+  .then((blob) => {
+    // Create blob link to download
+    const url = window.URL.createObjectURL(
+      new Blob([blob]),
+    );
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute(
+      'download',
+      list.name+".xml"
+    );
+    // Append to html link element page
+    document.body.appendChild(link);
+    // Start download
+    link.click();
+    // Clean up and remove the link
+    link.parentNode.removeChild(link);
+  });
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -49,6 +76,7 @@ function AllUsersPage() {
               validated = {item.validated}
             />
           ))}
+          
       </div>
       <TablePagination
         component="div"
@@ -58,6 +86,16 @@ function AllUsersPage() {
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <div>
+      <Button
+                    disabled={false}
+                    variant="contained"
+                    color="error"
+                    onClick={handleDownload}
+                  >
+                    Download
+                  </Button>
+      </div>
     </center>
   );
 }
