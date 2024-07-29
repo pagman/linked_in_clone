@@ -260,13 +260,6 @@ def get_active_coversations(
 #     return logic.admin_get_auction(db, auction_id, token)
 
 
-@app.get('/Search-post/', response_model=list[schema.Post])
-def Search_auction(
-    db: Session = Depends(get_db),
-    # query_params: schema.SearchParams = Depends()
-):
-    return logic.Search_Αuction(db)
-
 
 @app.put("/logout/", response_model=dict)
 def logout(

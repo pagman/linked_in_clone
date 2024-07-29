@@ -287,40 +287,7 @@ def admin_get_auction(db, auction_id, token):
     return db_auction
 
 
-def Search_post(db, query_params):
-    text_query = ""
-    if query_params.free_text:
-        text_query = utils._normalize_text_data(query_params.free_text)
-    if query_params.category:
-        for category in query_params.category:
-            text_query += f" {utils._normalize_text_data(str(category))}"
-    db_auction_list = crud.get_object_list(db, models.Auction)
-    search_list = []
-    return_list = []
-    for db_auction in db_auction_list:
-        if query_params.free_text:
-            search_string = db_auction.normalised_description
-        if query_params.category:
-            search_string = ""
-            for category in db_auction.categories:
-                search_string += f" {category.name}"
-        result = utils._compare_list_elements(
-            search_string.split(),
-            text_query.split())
-        if result:
-            search_list.append((db_auction.id, result))
-    search_list = utils._Sort_Tuple_List(search_list)
-    start = query_params.skip * query_params.limit
-    if start >= len(search_list):
-        return return_list
-    for i in range(start-1, start+query_params.limit):
-        if start >= len(search_list):
-            break
-        auction_tuple = search_list.pop(start)
-        return_list.append(crud.get_object_or_none(
-            db, models.Auction, filters={"id": auction_tuple[0]})
-        )
-    return return_list
+
 
 
 def logout(db, token):
