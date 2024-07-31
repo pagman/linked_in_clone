@@ -35,7 +35,7 @@ function App() {
   global.config.user.id = cookies.get("id");
 
   useEffect(() => {
-    document.title = "Auction site"
+    document.title = "tedi"
   }, [])
 
 

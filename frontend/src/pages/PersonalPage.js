@@ -130,7 +130,7 @@ export default function PersonalPage() {
     console.log(expertise_visible);
     console.log(img)
     axios
-        .put("https://localhost:8000/update-user/1", {
+        .put("https://localhost:8000/update-user/"+global.config.user.id, {
           work_exp: formValues.work_exp,
           work_exp_visible: work_exp_visible,
           education: formValues.education,
